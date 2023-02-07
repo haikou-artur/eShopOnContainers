@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: webshopapigw
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 80
+  - name: http2
+    protocol: TCP
+    port: 8001
+    targetPort: 8001
+  selector:
+    app: webshopapigw

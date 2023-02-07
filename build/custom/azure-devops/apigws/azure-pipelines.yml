@@ -1,0 +1,28 @@
+trigger:
+  branches:
+    include:
+    - dev
+  paths:
+    include:
+    - src/ApiGateways/*
+    - build/azure-devops/buildimages.yml
+    - build/azure-devops/multiarch.yml
+    - build/azure-devops/apigws/*
+    - deploy/custom/helm/webshoapigw/*
+    exclude:
+    - src/ApiGateways/Mobile.Bff.Shopping/aggregator/*
+    - src/ApiGateways/Web.Bff.Shopping/aggregator/*
+jobs:
+- job: PublishCharts
+  condition: ne('$(Build.Reason)', 'PullRequest')
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: $(Build.SourcesDirectory)/deploy/custom/helm
+      targetFolder: $(Build.ArtifactStagingDirectory)/deploy/custom/helm
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: $(Build.ArtifactStagingDirectory)/deploy/custom/helm
+      artifactName: helm

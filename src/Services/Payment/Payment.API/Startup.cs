@@ -136,14 +136,14 @@ public class Startup
             });
         }
 
-        services.AddTransient<OrderStatusChangedToStockConfirmedIntegrationEventHandler>();
+        services.AddTransient<OrderStatusChangedToCouponConfirmedIntegrationEventHandler>();
         services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
     }
 
     private void ConfigureEventBus(IApplicationBuilder app)
     {
         var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-        eventBus.Subscribe<OrderStatusChangedToStockConfirmedIntegrationEvent, OrderStatusChangedToStockConfirmedIntegrationEventHandler>();
+        eventBus.Subscribe<OrderStatusChangedToCouponConfirmedIntegrationEvent, OrderStatusChangedToCouponConfirmedIntegrationEventHandler>();
     }
 }
 

@@ -1,0 +1,26 @@
+trigger:
+  branches:
+    include:
+    - dev
+  paths:
+    include:
+    - src/BuildingBlocks/*
+    - src/Services/Ordering/*
+    - build/custom/azure-devops/buildimages.yml
+    - build/custom/azure-devops/multiarch.yml
+    - build/custom/azure-devops/ordering-api/*
+    - deploy/custom/helm/orderingapi/*
+    - deploy/custom/helm/orderingbackgroundtasks/*
+    - deploy/custom/helm/orderingsignalrhub/*
+jobs:
+- template: ../buildimages.yaml
+  parameters:
+    services: ordering-signalrhub
+    registryEndpoint: $(registryEndpoint)
+    helmfrom: $(Build.SourcesDirectory)/deploy/custom/helm
+    helmto: $(Build.ArtifactStagingDirectory)/deploy/custom/helm
+- template: ../multiarch.yaml
+  parameters:
+    image: orderingsignalr
+    branch: $(Build.SourceBranchName)
+    registryEndpoint: $(registryEndpoint)

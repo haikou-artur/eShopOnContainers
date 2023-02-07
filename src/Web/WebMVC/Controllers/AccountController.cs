@@ -1,13 +1,16 @@
-﻿namespace Microsoft.eShopOnContainers.WebMVC.Controllers;
+﻿using WebMVC.ViewModels;
+
+namespace Microsoft.eShopOnContainers.WebMVC.Controllers;
 
 [Authorize(AuthenticationSchemes = OpenIdConnectDefaults.AuthenticationScheme)]
 public class AccountController : Controller
 {
     private readonly ILogger<AccountController> _logger;
-
-    public AccountController(ILogger<AccountController> logger)
+    private readonly IIdentityParser<ApplicationUser> _appUserParser;
+    public AccountController(ILogger<AccountController> logger, IIdentityParser<ApplicationUser> appUserParser)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _appUserParser = appUserParser ?? throw new ArgumentNullException(nameof(appUserParser));
     }
 
     [Authorize(AuthenticationSchemes = OpenIdConnectDefaults.AuthenticationScheme)]
@@ -38,5 +41,24 @@ public class AccountController : Controller
         var homeUrl = Url.Action(nameof(CatalogController.Index), "Catalog");
         return new SignOutResult(OpenIdConnectDefaults.AuthenticationScheme,
             new AspNetCore.Authentication.AuthenticationProperties { RedirectUri = homeUrl });
+    }
+
+    public async Task<IActionResult> Profile()
+    {
+        var user = _appUserParser.Parse(HttpContext.User);
+        var profile = new Profile
+        {
+            State = user.State,
+            StateCode = user.StateCode,
+            City = user.City,
+            Country = user.Country,
+            CountryCode = user.CountryCode,
+            LastName = user.LastName,
+            ZipCode = user.ZipCode,
+            Name = user.Name,
+            Point = 22.35M
+        };
+
+        return View(profile);
     }
 }

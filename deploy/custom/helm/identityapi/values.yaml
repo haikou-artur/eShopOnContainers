@@ -1,0 +1,7 @@
+ports:
+  container: 80
+  service: 80
+
+image: arteshop/identityapi
+
+path_base: /coupon-api

@@ -18,7 +18,7 @@ public class OrderQueries
 
         var result = await connection.QueryAsync<dynamic>(
             @"select o.[Id] as ordernumber,o.OrderDate as date, o.Description as description,
-                    o.Address_City as city, o.Address_Country as country, o.Address_State as state, o.Address_Street as street, o.Address_ZipCode as zipcode,
+                    o.Address_City as city, o.Address_Country as country, o.Address_State as state, o.Address_Street as street, o.Address_ZipCode as zipcode, COALESCE(o.discount,0) as discount, o.discountCode, o.[LoyaltyPoints] as points,
                     os.Name as status, 
                     oi.ProductName as productname, oi.Units as units, oi.UnitPrice as unitprice, oi.PictureUrl as pictureurl
                     FROM ordering.Orders o
@@ -39,13 +39,13 @@ public class OrderQueries
         using var connection = new SqlConnection(_connectionString);
         connection.Open();
 
-        return await connection.QueryAsync<OrderSummary>(@"SELECT o.[Id] as ordernumber,o.[OrderDate] as [date],os.[Name] as [status], SUM(oi.units*oi.unitprice) as total
+        return await connection.QueryAsync<OrderSummary>(@"SELECT o.[Id] as ordernumber,o.[OrderDate] as [date],os.[Name] as [status], o.[discountCode], o.[discount], o.[LoyaltyPoints] as points, (SUM(oi.units*oi.unitprice) - COALESCE(o.[discount],0) - COALESCE(o.[LoyaltyPoints],0))  as total, SUM(oi.units*oi.unitprice) as subtotal
                     FROM [ordering].[Orders] o
                     LEFT JOIN[ordering].[orderitems] oi ON  o.Id = oi.orderid 
                     LEFT JOIN[ordering].[orderstatus] os on o.OrderStatusId = os.Id                     
                     LEFT JOIN[ordering].[buyers] ob on o.BuyerId = ob.Id
                     WHERE ob.IdentityGuid = @userId
-                    GROUP BY o.[Id], o.[OrderDate], os.[Name] 
+                    GROUP BY o.[Id], o.[OrderDate], os.[Name], o.[Discount], o.[DiscountCode], o.[LoyaltyPoints]
                     ORDER BY o.[Id]", new { userId });
     }
 
@@ -70,6 +70,9 @@ public class OrderQueries
             zipcode = result[0].zipcode,
             country = result[0].country,
             orderitems = new List<Orderitem>(),
+            discount = result[0].discount,
+            discountcode = result[0].discountCode,
+            points = result[0].points,
             total = 0
         };
 
@@ -87,6 +90,9 @@ public class OrderQueries
             order.orderitems.Add(orderitem);
         }
 
+        order.subtotal = order.total;
+        order.total -= order.discount;
+        order.total -= order.points;
         return order;
     }
 }

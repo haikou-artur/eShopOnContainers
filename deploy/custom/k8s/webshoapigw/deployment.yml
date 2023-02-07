@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webshopapigw
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webshopapigw
+  template:
+    metadata:
+      labels:
+        app: webshopapigw
+    spec:
+      volumes:
+      - name: config
+        configMap:
+          name: envoy-cm
+          items:
+          - key: envoy.yaml
+            path: envoy.yaml
+      containers:
+      - name: webshopapigw
+        image: envoyproxy/envoy:v1.11.1
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+          - name: config
+            mountPath: etc/envoy
+        ports:
+        - containerPort: 80
+        - containerPort: 8001

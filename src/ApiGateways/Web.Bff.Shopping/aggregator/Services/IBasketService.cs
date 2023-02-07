@@ -6,3 +6,8 @@ public interface IBasketService
 
     Task UpdateAsync(BasketData currentBasket);
 }
+
+public interface IBasketHttpService
+{
+    Task CheckoutAsync(BasketCheckout basketCheckout, string requestId);
+}

@@ -6,16 +6,22 @@ public record OrderStatusChangedToPaidIntegrationEvent : IntegrationEvent
     public string OrderStatus { get; }
     public string BuyerName { get; }
     public IEnumerable<OrderStockItem> OrderStockItems { get; }
+    public string BuyerId { get; set; }
+    public decimal Total { get; set; }
 
     public OrderStatusChangedToPaidIntegrationEvent(int orderId,
         string orderStatus,
         string buyerName,
-        IEnumerable<OrderStockItem> orderStockItems)
+        IEnumerable<OrderStockItem> orderStockItems,
+        decimal total,
+        string buyerId)
     {
         OrderId = orderId;
         OrderStockItems = orderStockItems;
         OrderStatus = orderStatus;
         BuyerName = buyerName;
+        Total = total;
+        BuyerId = buyerId;
     }
 }
 

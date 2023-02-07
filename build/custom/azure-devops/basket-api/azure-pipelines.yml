@@ -1,0 +1,24 @@
+trigger:
+  branches:
+    include:
+    - dev
+  paths:
+    include:
+    - src/BuildingBlocks/*
+    - src/Services/Basket/*
+    - build/custom/azure-devops/buildimages.yml
+    - build/custom/azure-devops/multiarch.yml
+    - build/custom/azure-devops/basket-api/*
+    - deploy/custom/helm/basketapi/*
+jobs:
+- template: ../buildimages.yaml
+  parameters:
+    services: basket-api
+    registryEndpoint: $(registryEndpoint)
+    helmfrom: $(Build.SourcesDirectory)/deploy/custom/helm
+    helmto: $(Build.ArtifactStagingDirectory)/deploy/custom/helm
+- template: ../multiarch.yaml
+  parameters:
+    image: basketapi
+    branch: $(Build.SourceBranchName)
+    registryEndpoint: $(registryEndpoint)

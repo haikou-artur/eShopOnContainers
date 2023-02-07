@@ -12,4 +12,8 @@ export interface IOrderDetail {
     country: number;
     total: number;
     orderitems: IOrderItem[];
+    subtotal: number;
+    discount: number;
+    discountCode: string;
+    points: number;
 }

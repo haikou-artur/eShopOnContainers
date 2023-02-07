@@ -26,11 +26,25 @@ public class UrlsConfig
         public static string GetOrderDraft() => "/api/v1/orders/draft";
     }
 
+    public class CouponOperations
+    {
+        public static string GetCouponByCode(string code) => $"/api/coupons/{code}";
+    }
+
+    public class LoyaltyOperations
+    {
+        public static string GetLoyalty() => $"/api/loyaltyprogram";
+    }
+
     public string Basket { get; set; }
 
     public string Catalog { get; set; }
 
     public string Orders { get; set; }
+
+    public string Coupons { get; set; }
+
+    public string Loyalty { get; set; }
 
     public string GrpcBasket { get; set; }
 

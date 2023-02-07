@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ordersbackgroundtasks
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ordersbackgroundtasks
+  template:
+    metadata:
+      labels:
+        app: ordersbackgroundtasks
+    spec:
+      containers:
+      - name: ordersbackgroundtasks
+        image: arteshop/orderbackgraondtasks
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Development
+          - name: ASPNETCORE_URLS
+            value: http://0.0.0.0:80
+          - name: GracePeriodTime
+            value: "1"
+          - name: ConnectionString
+            value: Server=sqldata,5433;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
+          - name: EventBusConnection
+            value: rabbitmq
+          - name: UseCustomizationData
+            value: "False"
+          - name: AzureServiceBusEnabled
+            value: "False"
+          - name: CheckUpdateTime
+            value: "30000"
+          - name: UseLoadTest
+            value: "False"
+          - name: Serilog__MinimumLevel__Override__Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
+            value: Verbose
+        ports:
+        - containerPort: 80

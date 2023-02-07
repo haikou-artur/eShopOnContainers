@@ -20,6 +20,10 @@ public record Order
     public string country { get; init; }
     public List<Orderitem> orderitems { get; set; }
     public decimal total { get; set; }
+    public string discountcode { get; init; }
+    public decimal discount { get; init; }
+    public decimal points { get; init; }
+    public decimal subtotal { get; set; }
 }
 
 public record OrderSummary
@@ -28,6 +32,10 @@ public record OrderSummary
     public DateTime date { get; init; }
     public string status { get; init; }
     public double total { get; init; }
+    public string discountcode { get; init; }
+    public decimal discount { get; init; }
+    public double subtotal { get; init; }
+    public decimal points { get; init; }
 }
 
 public record CardType

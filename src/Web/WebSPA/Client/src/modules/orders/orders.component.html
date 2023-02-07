@@ -8,9 +8,13 @@
         <div class="esh-orders-wrapper">
             <article class="esh-orders-titles row">
                 <section class="col-1"></section>
-                <section class="col-3">Date</section>
-                <section class="col-2">Total</section>
-                <section class="col-2">Status</section>
+                <section class="col-2">Date</section>
+                <section class="col-1">Subtotal</section>
+                <section class="col-1">Discount code</section>
+                <section class="col-1">Discount</section>
+                <section class="col-1">Points</section>
+                <section class="col-1">Total</section>
+                <section class="col-1">Status</section>
                 <section class="col-2"></section>
                 <section class="col-2"></section>
             </article>
@@ -18,13 +22,17 @@
             <article class="esh-orders-item divider row"
                      *ngFor="let order of orders">
                 <section class="col-1">{{order.ordernumber}}</section>
-                <section class="col-3">{{order.date | date:'short'}}</section>
-                <section class="col-2">${{order.total}}</section>
-                <section class="col-2">{{order.status}}</section>
+                <section class="col-2">{{order.date | date:'short'}}</section>
+                <section class="col-1">{{order.subtotal | currency}}</section>
+                <section class="col-1">{{order.discountcode}}</section>
+                <section class="col-1">{{order.discount}}</section>
+                <section class="col-1">{{order.points}}</section>
+                <section class="col-1">{{order.total | currency}}</section>
+                <section class="col-1">{{order.status}}</section>
                 <section class="col-2">
                     <a *ngIf="order.status.toLowerCase() === 'submitted'" (click)="cancelOrder(order.ordernumber)" class="esh-orders-link u-cursor-pointer">Cancel</a>
                 </section>
-                <section class="col-2">
+                <section class="col-1">
                     <a class="esh-orders-link" routerLink="/orders/{{order.ordernumber}}">Details</a>
                 </section>
             </article>

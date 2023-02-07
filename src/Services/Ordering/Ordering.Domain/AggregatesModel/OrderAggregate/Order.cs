@@ -1,4 +1,5 @@
 ﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.Events;
+using Ordering.Domain.Events;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
 
@@ -21,7 +22,9 @@ public class Order
 
     private string _description;
 
-
+    private decimal? _discount;
+    private string _discountCode;
+    private decimal? _points;
 
     // Draft orders have this set to true. Currently we don't check anywhere the draft status of an Order, but we could do it if needed
     private bool _isDraft;
@@ -49,13 +52,16 @@ public class Order
     }
 
     public Order(string userId, string userName, Address address, int cardTypeId, string cardNumber, string cardSecurityNumber,
-            string cardHolderName, DateTime cardExpiration, int? buyerId = null, int? paymentMethodId = null) : this()
+            string cardHolderName, DateTime cardExpiration, string discountCode, decimal discount, decimal points, int? buyerId = null, int? paymentMethodId = null) : this()
     {
         _buyerId = buyerId;
         _paymentMethodId = paymentMethodId;
         _orderStatusId = OrderStatus.Submitted.Id;
         _orderDate = DateTime.UtcNow;
         Address = address;
+        _discount= discount;
+        _discountCode = discountCode;
+        _points = points;
 
         // Add the OrderStarterDomainEvent to the domain events collection 
         // to be raised/dispatched when comitting changes into the Database [ After DbContext.SaveChanges() ]
@@ -115,16 +121,65 @@ public class Order
     {
         if (_orderStatusId == OrderStatus.AwaitingValidation.Id)
         {
-            AddDomainEvent(new OrderStatusChangedToStockConfirmedDomainEvent(Id));
-
+            AddDomainEvent(new OrderStatusChangedToAwaitingPointsValidationDomainEvent(_buyerId.GetValueOrDefault(), _points.GetValueOrDefault(), Id));
             _orderStatusId = OrderStatus.StockConfirmed.Id;
             _description = "All the items were confirmed with available stock.";
         }
     }
 
-    public void SetPaidStatus()
+    public void SetPointsConfirmedStatus()
     {
         if (_orderStatusId == OrderStatus.StockConfirmed.Id)
+        {
+            if (string.IsNullOrEmpty(_discountCode))
+            {
+                AddDomainEvent(new OrderStatusChangedToCouponConfirmedDomainEvent(Id));
+
+                _orderStatusId = OrderStatus.CouponValidated.Id;
+                _description = "The coupon was validated";
+            }
+            else
+            {
+                AddDomainEvent(new OrderStatusChangedToAwaitingCouponValidationDomainEvent(Id, _discountCode));
+                _orderStatusId = OrderStatus.PointsValidated.Id;
+                _description = "Points were confirmed.";
+            }
+
+        }
+    }
+
+    public void SetRejectedPointsStatus()
+    {
+        if (_orderStatusId == OrderStatus.StockConfirmed.Id)
+        {
+            _orderStatusId = OrderStatus.Cancelled.Id;
+            _description = $"The points: {_points} were rejected!";
+        }
+    }
+
+    public void SetConfirmedCouponStatus()
+    {
+        if(_orderStatusId == OrderStatus.PointsValidated.Id)
+        {
+            AddDomainEvent(new OrderStatusChangedToCouponConfirmedDomainEvent(Id));
+
+            _orderStatusId = OrderStatus.CouponValidated.Id;
+            _description = "The coupon was validated";
+        }
+    }
+
+    public void SetRejectedCouponStatus()
+    {
+        if (_orderStatusId == OrderStatus.PointsValidated.Id)
+        {
+            _orderStatusId = OrderStatus.Cancelled.Id;
+            _description = $"The coupon: {_discountCode} was rejected!";
+        }
+    }
+
+    public void SetPaidStatus()
+    {
+        if (_orderStatusId == OrderStatus.CouponValidated.Id)
         {
             AddDomainEvent(new OrderStatusChangedToPaidDomainEvent(Id, OrderItems));
 
@@ -190,6 +245,6 @@ public class Order
 
     public decimal GetTotal()
     {
-        return _orderItems.Sum(o => o.GetUnits() * o.GetUnitPrice());
+        return _orderItems.Sum(o => o.GetUnits() * o.GetUnitPrice()) - _discount.GetValueOrDefault() - _points.GetValueOrDefault();
     }
 }

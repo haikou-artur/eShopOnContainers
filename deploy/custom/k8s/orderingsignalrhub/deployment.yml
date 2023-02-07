@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orderssignalrhub
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orderssignalrhub
+  template:
+    metadata:
+      labels:
+        app: orderssignalrhub
+    spec:
+      containers:
+      - name: orderssignalrhub
+        image: arteshop/orderingsignalr
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Development
+          - name: ASPNETCORE_URLS
+            value: http://0.0.0.0:80
+          - name: EventBusConnection
+            value: rabbitmq
+          - name: AzureServiceBusEnabled
+            value: "False"
+          - name: identityUrl
+            value: http://identityapi.default.svc.cluster.local
+        ports:
+        - containerPort: 80

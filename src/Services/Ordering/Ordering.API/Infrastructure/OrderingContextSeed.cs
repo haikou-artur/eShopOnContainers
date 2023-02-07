@@ -134,7 +134,9 @@ public class OrderingContextSeed
             OrderStatus.StockConfirmed,
             OrderStatus.Paid,
             OrderStatus.Shipped,
-            OrderStatus.Cancelled
+            OrderStatus.Cancelled,
+            OrderStatus.CouponValidated,
+            OrderStatus.PointsValidated
         };
     }
 

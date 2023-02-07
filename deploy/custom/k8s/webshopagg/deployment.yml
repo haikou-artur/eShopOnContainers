@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webshopagg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webshopagg
+  template:
+    metadata:
+      labels:
+        app: webshopagg
+    spec:
+      containers:
+      - name: webshopagg
+        image: arteshop/webshoppingagg
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Development
+          - name: ASPNETCORE_URLS
+            value: http://0.0.0.0:80
+          - name: urls__basket
+            value: http://basket-api.default.svc.cluster.local
+          - name: urls__catalog
+            value: http://catalog-api.default.svc.cluster.local
+          - name: urls__orders
+            value: http://orders-api.default.svc.cluster.local
+          - name: urls__identity
+            value: http://identity-api.default.svc.cluster.local
+          - name: urls__coupons
+            value: http://coupon-api.default.svc.cluster.local
+          - name: urls__grpcBasket
+            value: http://basket-api.default.svc.cluster.local
+          - name: urls__grpcCatalog
+            value: http://catalog-api.default.svc.cluster.local:81
+          - name: urls__grpcOrdering
+            value: http://orders-api.default.svc.cluster.local:81
+          - name: CatalogUrlHC
+            value: http://catalog-api.default.svc.cluster.local/hc
+          - name: OrderingUrlHC
+            value: http://orders-api.default.svc.cluster.local/hc
+          - name: IdentityUrlHC
+            value: http://identity-api.default.svc.cluster.local/hc
+          - name: BasketUrlHC
+            value: http://basket-api.default.svc.cluster.local/hc
+          - name: PaymentUrlHC
+            value: http://payment-api.default.svc.cluster.local/hc
+          - name: IdentityUrlExternal
+            value: http://identity.webspa.my/hc
+        ports:
+        - containerPort: 80

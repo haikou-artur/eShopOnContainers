@@ -1,3 +1,6 @@
+using Ordering.API.Application.IntegrationEvents.EventHandling;
+using Ordering.API.Application.IntegrationEvents.Events;
+
 namespace Microsoft.eShopOnContainers.Services.Ordering.API;
 
 public class Startup
@@ -106,6 +109,11 @@ public class Startup
         eventBus.Subscribe<OrderStockRejectedIntegrationEvent, IIntegrationEventHandler<OrderStockRejectedIntegrationEvent>>();
         eventBus.Subscribe<OrderPaymentFailedIntegrationEvent, IIntegrationEventHandler<OrderPaymentFailedIntegrationEvent>>();
         eventBus.Subscribe<OrderPaymentSucceededIntegrationEvent, IIntegrationEventHandler<OrderPaymentSucceededIntegrationEvent>>();
+        eventBus.Subscribe<OrderStatusChangedToCouponConfirmedIntegrationEvent, IIntegrationEventHandler<OrderStatusChangedToCouponConfirmedIntegrationEvent>>();
+        eventBus.Subscribe<OrderCouponRejectedIntegrationEvent, IIntegrationEventHandler<OrderCouponRejectedIntegrationEvent>>();
+        eventBus.Subscribe<OrderCouponConfirmedIntegrationEvent, IIntegrationEventHandler<OrderCouponConfirmedIntegrationEvent>>();
+        eventBus.Subscribe<OrderPointsConfirmedIntegrationEvent, IIntegrationEventHandler<OrderPointsConfirmedIntegrationEvent>>();
+        eventBus.Subscribe<OrderPointsRejectedIntegrationEvent, IIntegrationEventHandler<OrderPointsRejectedIntegrationEvent>>();
     }
 
     protected virtual void ConfigureAuth(IApplicationBuilder app)
@@ -227,8 +235,8 @@ static class CustomExtensionsMethods
                 {
                     Implicit = new OpenApiOAuthFlow()
                     {
-                        AuthorizationUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
-                        TokenUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
+                        AuthorizationUrl = new Uri($"{configuration.GetValue<string>("IdentityUrl")}/connect/authorize"),
+                        TokenUrl = new Uri($"{configuration.GetValue<string>("IdentityUrl")}/connect/token"),
                         Scopes = new Dictionary<string, string>()
                         {
                             { "orders", "Ordering API" }

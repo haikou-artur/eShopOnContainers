@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: couponapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: couponapi
+  template:
+    metadata:
+      labels:
+        app: couponapi
+    spec:
+      containers:
+      - name: couponapi
+        image: {{ .Values.image }}
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Development
+          - name: ASPNETCORE_URLS
+            value: http://0.0.0.0:80
+          - name: EventBusConnection
+            value: {{ .Values.service.rabbitmq }}
+          - name: AzureServiceBusEnabled
+            value: "False"
+          - name: AzureStorageEnabled
+            value: "False"
+          - name: MongoDB__ConnectionURI
+            value: mongodb://{{ .Values.service.mongo }}
+          - name: MongoDB__DatabaseName
+            value: coupondb
+          - name: MongoDB__CollectionName
+            value: coupons
+          - name: IdentityUrl
+            value: {{ .Values.service.identity }}
+          - name: PATH_BASE
+            value: {{ .Values.path_base }}
+        ports:
+        - containerPort: {{ .Values.ports.container }}

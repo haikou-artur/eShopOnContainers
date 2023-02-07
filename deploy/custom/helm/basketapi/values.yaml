@@ -1,0 +1,8 @@
+ports:
+  container: 80
+  service: 80
+  grpc: 81
+
+image: arteshop/basketapi
+
+path_base: /basket-api

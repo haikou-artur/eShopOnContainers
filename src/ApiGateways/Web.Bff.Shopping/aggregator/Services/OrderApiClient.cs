@@ -13,6 +13,15 @@ public class OrderApiClient : IOrderApiClient
         _urls = config.Value;
     }
 
+    public async Task<Order> GetOrderAsync(int id)
+    {
+        var uri = $"{_urls.Orders}/api/v1/orders/{id}";
+        var response = await _apiClient.GetAsync(uri);
+        var content = await response.Content.ReadAsStringAsync();
+
+        return JsonSerializer.Deserialize<Order>(content);
+    }
+
     public async Task<OrderData> GetOrderDraftFromBasketAsync(BasketData basket)
     {
         var url = $"{_urls.Orders}{UrlsConfig.OrdersOperations.GetOrderDraft()}";
@@ -27,5 +36,14 @@ public class OrderApiClient : IOrderApiClient
         {
             PropertyNameCaseInsensitive = true
         });
+    }
+
+    public async Task<IEnumerable<OrderSummary>> GetOrderSummaryAsync()
+    {
+        var uri = $"{_urls.Orders}/api/v1/orders";
+        var response = await _apiClient.GetAsync(uri);
+        var content = await response.Content.ReadAsStringAsync();
+
+        return JsonSerializer.Deserialize<IEnumerable<OrderSummary>>(content);
     }
 }

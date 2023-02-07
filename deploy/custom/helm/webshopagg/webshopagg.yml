@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webshopagg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webshopagg
+  template:
+    metadata:
+      labels:
+        app: webshopagg
+    spec:
+      containers:
+      - name: webshopagg
+        image: arteshop.azurecr.io/webshoppingagg
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Development
+          - name: ASPNETCORE_URLS
+            value: http://0.0.0.0:80
+          - name: urls__basket
+            value: http://basketapi.default.svc.cluster.local:5103
+          - name: urls__catalog
+            value: http://catalogapi.default.svc.cluster.local:5101
+          - name: urls__orders
+            value: http://ordersapi.default.svc.cluster.local:5102
+          - name: urls__identity
+            value: http://identityapi.default.svc.cluster.local:5105
+          - name: urls__coupons
+            value: http://couponapi.default.svc.cluster.local:5106
+          - name: urls__grpcBasket
+            value: http://basketapi.default.svc.cluster.local:9103
+          - name: urls__grpcCatalog
+            value: http://catalogapi.default.svc.cluster.local:9101
+          - name: urls__grpcOrdering
+            value: http://ordersapi.default.svc.cluster.local:9102
+          - name: CatalogUrlHC
+            value: http://catalogapi.default.svc.cluster.local:5101/hc
+          - name: OrderingUrlHC
+            value: http://ordersapi.default.svc.cluster.local:5102/hc
+          - name: IdentityUrlHC
+            value: http://identityapi.default.svc.cluster.local:5105/hc
+          - name: BasketUrlHC
+            value: http://basketapi.default.svc.cluster.local:5103/hc
+          - name: PaymentUrlHC
+            value: http://paymentapi.default.svc.cluster.local:5108/hc
+          - name: IdentityUrlExternal
+            value: http://20.81.19.199:5105/hc
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webshopagg
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    protocol: TCP
+    port: 5121
+    targetPort: 80
+  selector:
+    app: webshopagg

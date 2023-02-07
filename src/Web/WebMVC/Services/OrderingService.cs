@@ -14,7 +14,7 @@ public class OrderingService : IOrderingService
         _httpClient = httpClient;
         _settings = settings;
 
-        _remoteServiceBaseUrl = $"{settings.Value.PurchaseUrl}/o/api/v1/orders";
+        _remoteServiceBaseUrl = $"http://localhost:5102/api/v1/orders";
     }
 
     async public Task<Order> GetOrder(ApplicationUser user, string id)

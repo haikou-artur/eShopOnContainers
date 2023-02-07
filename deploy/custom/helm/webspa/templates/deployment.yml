@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webspa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webspa
+  template:
+    metadata:
+      labels:
+        app: webspa
+    spec:
+      containers:
+      - name: webspa
+        image: {{ .Values.image }}
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Development
+          - name: ASPNETCORE_URLS
+            value: http://0.0.0.0:80
+          - name: PurchaseUrl
+            value: http://{{ .Values.ingress.webapigw }}
+          - name: IdentityUrlHC
+            value: http://{{ .Values.ingress.identity }}/hc
+          - name: identityUrl
+            value: http://{{ .Values.ingress.identity }}
+          - name: UseCustomizationData
+            value: "False"
+          - name: SignalrHubUrl
+            value: http://{{.Values.ingress.signalrhub }}}
+        ports:
+        - containerPort: {{ .Values.ports.container }}

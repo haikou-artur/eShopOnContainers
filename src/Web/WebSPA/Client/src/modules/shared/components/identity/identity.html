@@ -11,7 +11,6 @@
 
     <section class="esh-identity-section u-cursor-pointer pt-2 pb-2"
          *ngIf="authenticated">
-
         <div class="esh-identity-name">{{userName}}</div>
         <img class="esh-identity-image ml-2" src="assets/images/user.svg">
     </section>
@@ -22,6 +21,11 @@
         <div class="esh-identity-item"
              [routerLink]="['orders']">
             <div class="esh-identity-name">My orders</div>
+        </div>
+
+        <div class="esh-identity-item"
+             [routerLink]="['profile']">
+            <div class="esh-identity-name">Profile</div>
         </div>
 
         <div class="esh-identity-item"

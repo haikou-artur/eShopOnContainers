@@ -1,0 +1,12 @@
+﻿@model Microsoft.eShopOnContainers.WebMVC.ViewModels.Profile
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<div class="container">
+    <div>Name: @Html.DisplayFor(x => Model.Name)</div>
+    <div>Last Name: @Html.DisplayFor(x => Model.LastName)</div>
+    <div>Country: @Html.DisplayFor(x => Model.Country)</div>
+    <div>Points: @Html.DisplayFor(x => Model.Point)</div>
+</div>

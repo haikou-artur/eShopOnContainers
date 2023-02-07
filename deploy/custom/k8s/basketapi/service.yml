@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: basket-api
+spec:
+  type: ClusterIP
+  ports:
+  - name: http-1
+    protocol: TCP
+    port: 80
+    targetPort: 80
+  - name: http-2
+    protocol: TCP
+    port: 81
+    targetPort: 81
+  selector:
+    app: basketapi

@@ -1,0 +1,25 @@
+trigger:
+  branches:
+    include:
+    - dev
+  paths:
+    include:
+    - src/BuildingBlocks/*
+    - src/Services/Identity/*
+    - build/custom/azure-devops/buildimages.yml
+    - build/custom/azure-devops/multiarch.yml
+    - build/custom/azure-devops/identity-api/*
+    - deploy/custom/helm/identityapi/*
+jobs:
+- template: ../buildimages.yaml
+  parameters:
+    services: identity-api
+    registryEndpoint: $(registryEndpoint)
+    helmfrom: $(Build.SourcesDirectory)/deploy/custom/helm
+    helmto: $(Build.ArtifactStagingDirectory)/deploy/custom/helm
+- template: ../multiarch.yaml
+  parameters:
+    image: identityapi
+    branch: $(Build.SourceBranchName)
+    registryEndpoint: $(registryEndpoint)
+    registry: ${REGISTRY}

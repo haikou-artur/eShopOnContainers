@@ -1,0 +1,24 @@
+trigger:
+  branches:
+    include:
+    - dev
+  paths:
+    include:
+    - src/BuildingBlocks/*
+    - src/Services/Payment/*
+    - build/custom/azure-devops/buildimages.yml
+    - build/custom/azure-devops/multiarch.yml
+    - build/custom/azure-devops/payment-api/*
+    - deploy/custom/helm/paymentapi/*
+jobs:
+- template: ../buildimages.yaml
+  parameters:
+    services: payment-api
+    registryEndpoint: $(registryEndpoint)
+    helmfrom: $(Build.SourcesDirectory)/deploy/custom/helm
+    helmto: $(Build.ArtifactStagingDirectory)/deploy/custom/helm
+- template: ../multiarch.yaml
+  parameters:
+    image: paymentapi
+    branch: $(Build.SourceBranchName)
+    registryEndpoint: $(registryEndpoint)

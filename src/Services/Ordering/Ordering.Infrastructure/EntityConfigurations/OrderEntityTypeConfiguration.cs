@@ -49,6 +49,25 @@ class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Order>
             .HasColumnName("PaymentMethodId")
             .IsRequired(false);
 
+        orderConfiguration
+            .Property<decimal?>("_discount")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .HasColumnName("Discount")
+            .HasDefaultValue(decimal.Zero)
+            .IsRequired(false);
+
+        orderConfiguration
+            .Property<string>("_discountCode")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .HasColumnName("DiscountCode")
+            .IsRequired(false);
+
+        orderConfiguration
+            .Property<decimal?>("_points")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .HasColumnName("LoyaltyPoints")
+            .IsRequired(false);
+
         orderConfiguration.Property<string>("Description").IsRequired(false);
 
         var navigation = orderConfiguration.Metadata.FindNavigation(nameof(Order.OrderItems));

@@ -15,6 +15,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                 new ApiResource("webshoppingagg", "Web Shopping Aggregator"),
                 new ApiResource("orders.signalrhub", "Ordering Signalr Hub"),
                 new ApiResource("webhooks", "Webhooks registration Service"),
+                new ApiResource("coupon", "Coupon Service"),
             };
         }
 
@@ -53,7 +54,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "basket",
                         "webshoppingagg",
                         "orders.signalrhub",
-                        "webhooks"
+                        "webhooks",
+                        "coupon"
                     },
                 },
                 new Client
@@ -244,7 +246,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                     AllowedScopes =
                     {
                         "webshoppingagg",
-                        "basket"
+                        "basket",
+                        "coupon"
                     }
                 },
                 new Client
@@ -260,6 +263,34 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                     AllowedScopes =
                     {
                         "webhooks"
+                    }
+                },
+                new Client
+                {
+                    ClientId = "couponswaggerui",
+                    ClientName = "Coupon Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{clientsUrl["CouponApi"]}/swagger/oauth2-redirect.html" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["CouponApi"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "coupon"
+                    }
+                },
+                new Client
+                {
+                    ClientId = "webshoppingagg",
+                    ClientName = "webshoppingagg API",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+                    AllowedScopes =
+                    {
+                        "coupon",
+                        "basket",
+                        "orders"
                     }
                 }
             };

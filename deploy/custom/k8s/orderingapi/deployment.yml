@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ordersapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ordersapi
+  template:
+    metadata:
+      labels:
+        app: ordersapi
+    spec:
+      containers:
+      - name: ordersapi
+        image: arteshop/orderapi
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Development
+          - name: ASPNETCORE_URLS
+            value: http://0.0.0.0:80
+          - name: identityUrl
+            value: http://identity-api.default.svc.cluster.local
+          - name: IdentityUrlExternal
+            value: http://identity.webspa.my:8080
+          - name: ConnectionString
+            value: Server=sqldata,5433;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
+          - name: EventBusConnection
+            value: rabbitmq
+          - name: UseCustomizationData
+            value: "False"
+          - name: AzureServiceBusEnabled
+            value: "False"
+          - name: CheckUpdateTime
+            value: "30000"
+          - name: PATH_BASE
+            value: /ordering-api
+          - name: UseLoadTest
+            value: "False"
+          - name: Serilog__MinimumLevel__Override__Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
+            value: Verbose
+          - name: Serilog__MinimumLevel__Override__ordering-api
+            value: Verbose
+          - name: GRPC_PORT
+            value: "81"
+          - name: PORT
+            value: "80"
+        ports:
+        - containerPort: 80
+        - containerPort: 81

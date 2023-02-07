@@ -6,6 +6,7 @@
         background-color: $color-brightest;
         padding-bottom: 4rem;
         padding-top: 4rem;
+        width: 90%;
     }
 
     &-titles {
@@ -13,7 +14,7 @@
         font-size: $font-size-l;
         font-weight: $font-weight-semilight;
         margin-bottom: 1rem;
-        padding-left: 5rem;
+        padding-left: 1px;
         text-transform: uppercase;
     }
 
@@ -23,7 +24,7 @@
         font-weight: $font-weight-normal;
         height: $height;
         line-height: $height;
-        padding-left: 5rem;
+        padding-left: 1px;
         position: relative;
     }
 

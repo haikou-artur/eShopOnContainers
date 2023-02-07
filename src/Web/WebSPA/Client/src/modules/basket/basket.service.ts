@@ -110,6 +110,9 @@ export class BasketService {
         basketCheckout.cardholdername = order.cardholdername;
         basketCheckout.total = 0;
         basketCheckout.expiration = order.expiration;
+        basketCheckout.discount = order.discount;
+        basketCheckout.discountCode = order.discountCode;
+        basketCheckout.points = order.points;
 
         return basketCheckout;
     }

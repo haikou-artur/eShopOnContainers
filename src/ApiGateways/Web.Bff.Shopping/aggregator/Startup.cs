@@ -41,7 +41,6 @@ public class Startup
         {
             app.UseDeveloperExceptionPage();
         }
-
         app.UseHttpsRedirection();
 
         app.UseSwagger().UseSwaggerUI(c =>
@@ -160,6 +159,18 @@ public static class ServiceCollectionExtensions
         //register http services
 
         services.AddHttpClient<IOrderApiClient, OrderApiClient>()
+            .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+            .AddDevspacesSupport();
+
+        services.AddHttpClient<ICouponService, CouponService>()
+            .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+            .AddDevspacesSupport();
+
+        services.AddHttpClient<IBasketHttpService, BasketService>()
+            .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+            .AddDevspacesSupport();
+
+        services.AddHttpClient<ILoyaltyService, LoyaltyService>()
             .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
             .AddDevspacesSupport();
 

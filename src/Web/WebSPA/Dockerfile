@@ -1,6 +1,6 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-ARG NODE_IMAGE=node:12.0
+ARG NODE_IMAGE=node:18.13.0
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 80
@@ -9,10 +9,10 @@ FROM ${NODE_IMAGE} as node-build
 WORKDIR /web/src
 COPY Web/WebSPA/Client/package.json .
 COPY Web/WebSPA/Client/package-lock.json .
-RUN npm install -g npm@6
+# RUN npm install -g npm
 RUN npm install
 COPY Web/WebSPA/Client .
-RUN npm run build:prod
+RUN npm run build:dev
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
@@ -50,6 +50,9 @@ COPY "Web/WebhookClient/WebhookClient.csproj" "Web/WebhookClient/WebhookClient.c
 COPY "Web/WebMVC/WebMVC.csproj" "Web/WebMVC/WebMVC.csproj"
 COPY "Web/WebSPA/WebSPA.csproj" "Web/WebSPA/WebSPA.csproj"
 COPY "Web/WebStatus/WebStatus.csproj" "Web/WebStatus/WebStatus.csproj"
+COPY "Services/Coupon/Coupon.API/Coupon.API.csproj" "Services/Coupon/Coupon.API/Coupon.API.csproj"
+COPY "Services/Coupon/Coupon.Domain/Coupon.Domain.csproj" "Services/Coupon/Coupon.Domain/Coupon.Domain.csproj"
+COPY "Services/Coupon/Coupon.Infrastructure/Coupon.Infrastructure.csproj" "Services/Coupon/Coupon.Infrastructure/Coupon.Infrastructure.csproj"
 
 COPY "docker-compose.dcproj" "docker-compose.dcproj"
 

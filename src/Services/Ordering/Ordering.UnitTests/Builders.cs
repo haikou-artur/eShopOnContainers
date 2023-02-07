@@ -24,7 +24,10 @@ public class OrderBuilder
             cardNumber: "12",
             cardSecurityNumber: "123",
             cardHolderName: "name",
-            cardExpiration: DateTime.UtcNow);
+            cardExpiration: DateTime.UtcNow,
+            discount: 10,
+            discountCode: "DISC-10",
+            points: 1);
     }
 
     public OrderBuilder AddOne(

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webspa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webspa
+  template:
+    metadata:
+      labels:
+        app: webspa
+    spec:
+      containers:
+      - name: webspa
+        image: arteshop/webspa
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Development
+          - name: ASPNETCORE_URLS
+            value: http://0.0.0.0:80
+          - name: PurchaseUrl
+            value: http://webapigw.webspa.my:8080
+          - name: IdentityUrlHC
+            value: http://identity.webspa.my:8080/hc
+          - name: identityUrl
+            value: http://identity.webspa.my:8080
+          - name: UseCustomizationData
+            value: "False"
+          - name: SignalrHubUrl
+            value: http://signalrhub.webspa.my:8080
+        ports:
+        - containerPort: 80

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paymentapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: paymentapi
+  template:
+    metadata:
+      labels:
+        app: paymentapi
+    spec:
+      containers:
+      - name: paymentapi
+        image: arteshop/paymentapi
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Development
+          - name: ASPNETCORE_URLS
+            value: http://0.0.0.0:80
+          - name: EventBusConnection
+            value: rabbitmq
+          - name: AzureServiceBusEnabled
+            value: "False"
+          - name: Serilog__MinimumLevel__Override__payment-api.IntegrationEvents.EventHandling
+            value: Verbose
+          - name: Serilog__MinimumLevel__Override__Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
+            value: Verbose
+        ports:
+        - containerPort: 80

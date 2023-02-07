@@ -14,6 +14,10 @@ export interface IOrder {
     cardtypeid: number;
     buyer: string;
     ordernumber: string;
+    subtotal: number;
     total: number;
     orderItems: IOrderItem[];
+    discount: number;
+    discountCode: string;
+    points: number;
 }

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: basketapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: basketapi
+  template:
+    metadata:
+      labels:
+        app: basketapi
+    spec:
+      containers:
+      - name: basketapi
+        image: {{ .Values.image }}
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Development
+          - name: ASPNETCORE_URLS
+            value: http://0.0.0.0:80
+          - name: EventBusConnection
+            value: {{ .Values.service.rabbitmq }}
+          - name: AzureServiceBusEnabled
+            value: "False"
+          - name: ConnectionString
+            value: {{ .Values.service.redis }}
+          - name: IdentityUrlExternal
+            value: {{ .Values.ingress.identity }}
+          - name: PATH_BASE
+            value: {{ .Values.path_base }}
+          - name: GRPC_PORT
+            value: {{ .Values.ports.grpc | quote }}
+          - name: identityUrl
+            value: {{ .Values.service.identity }}
+          - name: PORT
+            value: {{ .Values.ports.container | quote }}
+        ports:
+        - containerPort: {{ .Values.ports.container }}
+        - containerPort: {{ .Values.ports.grpc }}

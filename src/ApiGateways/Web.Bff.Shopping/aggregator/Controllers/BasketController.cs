@@ -1,17 +1,27 @@
-﻿namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers;
+﻿using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services;
 
-[Route("api/v1/[controller]")]
+namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers;
+
+[Route("b/api/v1/[controller]")]
 [Authorize]
 [ApiController]
 public class BasketController : ControllerBase
 {
     private readonly ICatalogService _catalog;
     private readonly IBasketService _basket;
+    private readonly IBasketHttpService _basketHttpService;
 
-    public BasketController(ICatalogService catalogService, IBasketService basketService)
+    public BasketController(ICatalogService catalogService, IBasketService basketService, IBasketHttpService basketHttpService)
     {
         _catalog = catalogService;
         _basket = basketService;
+        _basketHttpService = basketHttpService;
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<BasketData>> Get(string id)
+    {
+        return await _basket.GetByIdAsync(id);
     }
 
     [HttpPost]
@@ -150,5 +160,22 @@ public class BasketController : ControllerBase
         await _basket.UpdateAsync(currentBasket);
 
         return Ok();
+    }
+
+    [Route("checkout")]
+    [HttpPost]
+    [ProducesResponseType((int)HttpStatusCode.Accepted)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    public async Task<ActionResult> CheckoutAsync([FromBody] BasketCheckout basketCheckout, [FromHeader(Name = "x-requestid")] string requestId)
+    {
+        try
+        {
+            await _basketHttpService.CheckoutAsync(basketCheckout, requestId);
+            return Accepted();
+        }
+        catch
+        {
+            return BadRequest();
+        }
     }
 }

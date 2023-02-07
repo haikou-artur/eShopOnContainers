@@ -13,4 +13,7 @@
     buyer: string;
     ordernumber: string;
     total: number;
+    discount: number;
+    discountCode: string;
+    points: number;
 }

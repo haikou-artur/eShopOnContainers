@@ -11,4 +11,5 @@ public class AppSettings
 
     public string ActivateCampaignDetailFunction { get; set; }
     public bool UseCustomizationData { get; set; }
+    public string CatalogUrl { get; set; }
 }

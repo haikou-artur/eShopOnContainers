@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: identityapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: identityapi
+  template:
+    metadata:
+      labels:
+        app: identityapi
+    spec:
+      containers:
+      - name: identityapi
+        image: arteshop/identityapi
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Development
+          - name: ASPNETCORE_URLS
+            value: http://0.0.0.0:80
+          - name: SpaClient
+            value: http://webspa.my:8080
+          - name: ConnectionString
+            value: Server=sqldata,5433;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word
+          - name: BasketApiClient
+            value: http://basket-api.default.svc.cluster.local
+          - name: OrderingApiClient
+            value: http://orders-api.default.svc.cluster.local
+          - name: WebShoppingAggClient
+            value: http://localhost:8080
+          - name: CouponApiClient
+            value: http://coupon-api.default.svc.cluster.local
+        ports:
+        - containerPort: 80

@@ -13,7 +13,3 @@ global using System.Security.Claims;
 global using System.Threading.Tasks;
 global using Xunit;
 global using IBasketIdentityService = Microsoft.eShopOnContainers.Services.Basket.API.Services.IIdentityService;
-global using Microsoft.eShopOnContainers.WebMVC.Controllers;
-global using Microsoft.eShopOnContainers.WebMVC.Services;
-global using Microsoft.eShopOnContainers.WebMVC.ViewModels;
-global using BasketModel = Microsoft.eShopOnContainers.WebMVC.ViewModels.Basket;

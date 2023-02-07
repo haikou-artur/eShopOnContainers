@@ -19,7 +19,7 @@
     "eShopOnContainers.Identity": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:55105",
+      "applicationUrl": "http://localhost:5105",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

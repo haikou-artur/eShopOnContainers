@@ -1,0 +1,24 @@
+trigger:
+  branches:
+    include:
+    - dev
+  paths:
+    include:
+    - src/BuildingBlocks/*
+    - src/Web/WebSPA/*
+    - build/custom/azure-devops/buildimages.yml
+    - build/custom/azure-devops/multiarch.yml
+    - build/custom/azure-devops/webspa/*
+    - deploy/custom/helm/webspa/*
+jobs:
+- template: ../buildimages.yaml
+  parameters:
+    services: webspa
+    registryEndpoint: $(registryEndpoint)
+    helmfrom: $(Build.SourcesDirectory)/deploy/custom/helm
+    helmto: $(Build.ArtifactStagingDirectory)/deploy/custom/helm
+- template: ../multiarch.yaml
+  parameters:
+    image: webspa
+    branch: $(Build.SourceBranchName)
+    registryEndpoint: $(registryEndpoint)

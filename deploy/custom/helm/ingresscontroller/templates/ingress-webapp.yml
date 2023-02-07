@@ -1,0 +1,52 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-mywebspa
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: {{ .Values.nginx-ingress-ssl-redirect }}
+    ingress.kubernetes.io/ssl-redirect: {{ .Values.ingress-kube-ssl-redirect }}
+    kubernetes.io/ingress.class: {{ .Values.ingress-class }}
+spec:
+  rules:
+  - host: {{ .Values.ingress.webspa }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Values.service.webspa }}
+            port:
+              number: 80
+  - host: {{ .Values.ingress.identity }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Values.service.identity-api }}
+            port:
+              number: 80
+  - host: {{ .Values.ingress.webapigw }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Values.service.webshopapigw }}
+            port:
+              number: 80
+  - host: {{ .Values.ingress.signalrhub }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Values.service.signalrhub }}
+            port:
+              number: 80
+  ingressClassName: nginx
+  

@@ -7,8 +7,10 @@ import { BasketService } from '../../basket/basket.service';
 import { IOrder }                                   from '../../shared/models/order.model';
 import { BasketWrapperService }                     from '../../shared/services/basket.wrapper.service';
 
-import { FormGroup, FormBuilder, Validators  }      from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators  }      from '@angular/forms';
 import { Router }                                   from '@angular/router';
+import { ICoupon } from '../../shared/models/coupon.model';
+import { CouponService } from '../../shared/services/coupon.service';
 
 @Component({
     selector: 'esh-orders_new .esh-orders_new .mb-5',
@@ -16,12 +18,17 @@ import { Router }                                   from '@angular/router';
     templateUrl: './orders-new.component.html'
 })
 export class OrdersNewComponent implements OnInit {
-    newOrderForm: FormGroup;  // new order form
+    newOrderForm: UntypedFormGroup;  // new order form
     isOrderProcessing: boolean;
     errorReceived: boolean;
     order: IOrder;
+    coupon: ICoupon
+    couponValidationMessage: string;
+    discountCode: string;
+    points: number = 0;
+    isPointsChecked: boolean = false;
 
-    constructor(private orderService: OrdersService, private basketService: BasketService, fb: FormBuilder, private router: Router) {
+    constructor(private orderService: OrdersService, private basketService: BasketService, fb: UntypedFormBuilder, private router: Router, private couponService: CouponService) {
         // Obtain user profile information
         this.order = orderService.mapOrderAndIdentityInfoNewOrder();
         this.newOrderForm = fb.group({
@@ -37,6 +44,13 @@ export class OrdersNewComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.couponService.getPoints().subscribe(resp => {
+            this.updatePoints(resp);
+        });
+    }
+
+    updatePoints(points: number) {
+        this.points = points;
     }
 
     submitForm(value: any) {
@@ -49,6 +63,9 @@ export class OrdersNewComponent implements OnInit {
         this.order.cardholdername = this.newOrderForm.controls['cardholdername'].value;
         this.order.cardexpiration = new Date(20 + this.newOrderForm.controls['expirationdate'].value.split('/')[1], this.newOrderForm.controls['expirationdate'].value.split('/')[0]);
         this.order.cardsecuritynumber = this.newOrderForm.controls['securitycode'].value;
+        this.order.discount = this.coupon?.discount;
+        this.order.discountCode = this.coupon?.code;
+        this.order.points = this.isPointsChecked ? this.points : 0;
         let basketCheckout = this.basketService.mapBasketInfoCheckout(this.order);
         this.basketService.setBasketCheckout(basketCheckout)
             .pipe(catchError((errMessage) => {
@@ -61,6 +78,26 @@ export class OrdersNewComponent implements OnInit {
             });
         this.errorReceived = false;
         this.isOrderProcessing = true;
+    }
+
+    checkValidationCoupon(discountCode: string) {
+        this.couponService.getCoupon(discountCode).subscribe(coupon => {
+            this.updateCouponState(coupon);
+        });
+    }
+
+    updateCouponState(coupon: ICoupon): void {
+        if (coupon.code) {
+            this.coupon = coupon;
+            this.couponValidationMessage = null;
+        }
+        else {
+            this.couponValidationMessage = "Coupon is not found!";
+        }
+    }
+
+    changeIsPointsChecked() {
+        this.isPointsChecked = !this.isPointsChecked;
     }
 }
 

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalogapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: catalogapi
+  template:
+    metadata:
+      labels:
+        app: catalogapi
+    spec:
+      containers:
+      - name: catalogapi
+        image: {{ .Values.image }}
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Development
+          - name: ASPNETCORE_URLS
+            value: http://0.0.0.0:80
+          - name: EventBusConnection
+            value: {{ .Values.service.rabbitmq }}
+          - name: AzureServiceBusEnabled
+            value: "False"
+          - name: ConnectionString
+            value: Server=sqldata,5433;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word
+          - name: PicBaseUrl
+            value: {{ .Values.ingress.webapigw }}/c/api/v1/catalog/items/[0]/pic/
+          - name: PATH_BASE
+            value: {{ .Values.path_base }}
+          - name: GRPC_PORT
+            value: {{ .Values.ports.grpc | quote }}
+          - name: AzureStorageEnabled
+            value: "False"
+          - name: PORT
+            value: {{ .Values.ports.container | quote }}
+        ports:
+        - containerPort: {{ .Values.ports.container }}
+        - containerPort: {{ .Values.ports.grpc }}

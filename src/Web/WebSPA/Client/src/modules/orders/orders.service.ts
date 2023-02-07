@@ -10,12 +10,13 @@ import { BasketWrapperService } from '../shared/services/basket.wrapper.service'
 
 import { Observable } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
+import { CouponService } from '../shared/services/coupon.service';
 
 @Injectable()
 export class OrdersService {
     private ordersUrl: string = '';
 
-    constructor(private service: DataService, private basketService: BasketWrapperService, private identityService: SecurityService, private configurationService: ConfigurationService) {
+    constructor(private service: DataService, private basketService: BasketWrapperService, private identityService: SecurityService, private configurationService: ConfigurationService, private couponService: CouponService) {
         if (this.configurationService.isReady)
             this.ordersUrl = this.configurationService.serverSettings.purchaseUrl;
         else

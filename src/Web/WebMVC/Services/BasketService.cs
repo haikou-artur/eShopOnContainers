@@ -16,8 +16,8 @@ public class BasketService : IBasketService
         _settings = settings;
         _logger = logger;
 
-        _basketByPassUrl = $"{_settings.Value.PurchaseUrl}/b/api/v1/basket";
-        _purchaseUrl = $"{_settings.Value.PurchaseUrl}/api/v1";
+        _basketByPassUrl = $"http://localhost:5103/api/v1/basket";
+        _purchaseUrl = $"http://localhost:61632/api/v1";
     }
 
     public async Task<Basket> GetBasket(ApplicationUser user)

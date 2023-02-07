@@ -1,4 +1,6 @@
-﻿namespace FunctionalTests.Services.Ordering;
+﻿using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
+
+namespace FunctionalTests.Services.Ordering;
 
 public class OrderingScenarios : OrderingScenariosBase
 {

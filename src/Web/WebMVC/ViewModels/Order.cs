@@ -9,6 +9,8 @@ public class Order
 
     public string Status { get; set; }
 
+    public decimal SubTotal { get; set; }
+
     public decimal Total { get; set; }
 
     public string Description { get; set; }
@@ -50,6 +52,8 @@ public class Order
 
     [Required]
     public Guid RequestId { get; set; }
+
+    public CouponDto Coupon { get; set; }
 
 
     public void CardExpirationShortFormat()

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: identityapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: identityapi
+  template:
+    metadata:
+      labels:
+        app: identityapi
+    spec:
+      containers:
+      - name: identityapi
+        image: {{ .Values.image }}
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Development
+          - name: ASPNETCORE_URLS
+            value: http://0.0.0.0:80
+          - name: SpaClient
+            value: http://{{ .Values.ingress.webspa }}
+          - name: ConnectionString
+            value: Server=sqldata,5433;Database=Microsoft.eShopOnContainers.Service.IdentityDb;User Id=sa;Password=Pass@word
+          - name: BasketApiClient
+            value: {{ .Values.service.basket }}
+          - name: OrderingApiClient
+            value: {{ .Values.service.orders }}
+          - name: CouponApiClient
+            value: {{ .Values.service.coupons }}
+        ports:
+        - containerPort: {{ .Values.ports.container }}

@@ -1,0 +1,18 @@
+ingress:
+  identity: identity.webspa.my
+  webapigw: webapigw.webspa.my
+  webspa: webspa.my
+  signalrhub: signalrhub.webspa.my
+
+service:
+  identity: http://identity-api.default.svc.cluster.local
+  basket: http://basket-api.default.svc.cluster.local
+  orders: http://orders-api.default.svc.cluster.local
+  coupons: http://coupon-api.default.svc.cluster.local
+  redis: redis
+  rabbitmq: rabbitmq
+  mongo: mongo
+  webspa: webspa
+  identity-api: identity-api
+  webshopapigw: webshopapigw
+  signalrhub: orderssignalrhub

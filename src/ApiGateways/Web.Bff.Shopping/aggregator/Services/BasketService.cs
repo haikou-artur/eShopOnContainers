@@ -1,16 +1,37 @@
-﻿namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services;
+﻿using System.Net.Http;
+using System.Net.Http.Json;
 
-public class BasketService : IBasketService
+namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services;
+
+public class BasketService : IBasketService, IBasketHttpService
 {
     private readonly Basket.BasketClient _basketClient;
     private readonly ILogger<BasketService> _logger;
+    private readonly HttpClient _httpClient;
+    private readonly UrlsConfig _urlsConfig;
 
-    public BasketService(Basket.BasketClient basketClient, ILogger<BasketService> logger)
+    public BasketService(Basket.BasketClient basketClient, ILogger<BasketService> logger, HttpClient httpClient, IOptions<UrlsConfig> config)
     {
         _basketClient = basketClient;
         _logger = logger;
+        _httpClient = httpClient;
+        _urlsConfig = config.Value;
     }
-    
+
+    public async Task CheckoutAsync(BasketCheckout basketCheckout, string requestId)
+    {
+        var uri = $"{_urlsConfig.Basket}/api/v1/basket/checkout";
+        var request = new HttpRequestMessage(HttpMethod.Post, uri);
+        request.Content = JsonContent.Create(basketCheckout);
+        request.Headers.Add("x-requestid", requestId);
+        var reposne = await _httpClient.SendAsync(request);
+
+        if (!reposne.IsSuccessStatusCode)
+        {
+            throw new Exception("Basket exeception");
+        }
+    }
+
     public async Task<BasketData> GetByIdAsync(string id)
     {
         _logger.LogDebug("grpc client created, request = {@id}", id);
@@ -92,4 +113,6 @@ public class BasketService : IBasketService
 
         return map;
     }
+
+
 }

@@ -55,7 +55,6 @@
     <ProjectReference Include="..\..\..\Services\Basket\Basket.API\Basket.API.csproj" />
     <ProjectReference Include="..\..\..\Services\Catalog\Catalog.API\Catalog.API.csproj" />
     <ProjectReference Include="..\..\..\Services\Ordering\Ordering.API\Ordering.API.csproj" />
-    <ProjectReference Include="..\..\..\Web\WebMVC\WebMVC.csproj" />
   </ItemGroup>
 
   <ItemGroup>

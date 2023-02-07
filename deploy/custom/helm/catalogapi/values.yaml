@@ -1,0 +1,8 @@
+ports:
+  container: 80
+  service: 80
+  grpc: 81
+
+image: arteshop/catalogapi
+
+path_base: /catalog-api
