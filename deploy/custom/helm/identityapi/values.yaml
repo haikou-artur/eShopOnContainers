@@ -4,4 +4,4 @@ ports:
 
 image: arteshop/identityapi
 
-path_base: /coupon-api
+path_base: /identity-api

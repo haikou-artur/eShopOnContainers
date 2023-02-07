@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: ordersbackgroundtasks
-        image: arteshop/orderbackgraondtasks
+        image: {{ .Values.image }}
         imagePullPolicy: IfNotPresent
         env:
           - name: ASPNETCORE_ENVIRONMENT
@@ -24,7 +24,7 @@ spec:
           - name: GracePeriodTime
             value: "1"
           - name: ConnectionString
-            value: Server=sqldata,5433;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
+            value: Server={{ .Valuse.service.sqldata }},5433;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
           - name: EventBusConnection
             value: rabbitmq
           - name: UseCustomizationData
@@ -38,4 +38,4 @@ spec:
           - name: Serilog__MinimumLevel__Override__Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             value: Verbose
         ports:
-        - containerPort: 80
+        - containerPort: {{ .Values.ports.container }}

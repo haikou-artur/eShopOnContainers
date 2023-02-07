@@ -21,11 +21,11 @@ spec:
             path: envoy.yaml
       containers:
       - name: webshopapigw
-        image: envoyproxy/envoy:v1.11.1
+        image: {{ .Values.image }}
         imagePullPolicy: IfNotPresent
         volumeMounts:
           - name: config
             mountPath: etc/envoy
         ports:
-        - containerPort: 80
-        - containerPort: 8001
+        - containerPort: {{ .Values.ports.container }}
+        - containerPort: {{ .Values.ports.admin }}

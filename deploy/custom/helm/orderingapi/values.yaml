@@ -1,6 +1,8 @@
 ports:
   container: 80
+  service: 80
+  grpc: 81
 
-nginx-ingress-ssl-redirect: "false"
-ingress-kube-ssl-redirect: "false"
-ingress-class: addon-http-application-routing
+path_base: /ordering-api
+
+image: arteshop/orderapi

@@ -7,7 +7,7 @@ spec:
   ports:
   - name: http
     protocol: TCP
-    port: 80
-    targetPort: 80
+    port: {{ .Values.ports.service }}
+    targetPort: {{ .Values.ports.container }}
   selector:
     app: orderssignalrhub

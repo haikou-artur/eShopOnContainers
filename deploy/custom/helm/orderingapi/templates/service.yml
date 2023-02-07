@@ -7,11 +7,11 @@ spec:
   ports:
   - name: http-1
     protocol: TCP
-    port: 80
-    targetPort: 80
+    port: {{ .Values.ports.service }}
+    targetPort: {{ .Values.ports.container }}
   - name: http-2
     protocol: TCP
-    port: 81
-    targetPort: 81
+    port: {{ .Values.ports.grpc }}
+    targetPort: {{ .Values.ports.grpc }}
   selector:
     app: ordersapi

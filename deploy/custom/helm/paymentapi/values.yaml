@@ -1,0 +1,5 @@
+ports:
+  container: 80
+  service: 80
+
+image: arteshop/paymentapi

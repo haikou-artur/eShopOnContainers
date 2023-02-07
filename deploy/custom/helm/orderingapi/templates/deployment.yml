@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: ordersapi
-        image: arteshop/orderapi
+        image: {{ .Values.image }}
         imagePullPolicy: IfNotPresent
         env:
           - name: ASPNETCORE_ENVIRONMENT
@@ -22,13 +22,13 @@ spec:
           - name: ASPNETCORE_URLS
             value: http://0.0.0.0:80
           - name: identityUrl
-            value: http://identity-api.default.svc.cluster.local
+            value: {{ .Values.service.identity }}
           - name: IdentityUrlExternal
-            value: http://identity.webspa.my:8080
+            value: http://{{ .Values.ingress.identity }}
           - name: ConnectionString
-            value: Server=sqldata,5433;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
+            value: Server={{ .Values.service.sqldata }},5433;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
           - name: EventBusConnection
-            value: rabbitmq
+            value: {{.Values.serivice.rabbitmq}}
           - name: UseCustomizationData
             value: "False"
           - name: AzureServiceBusEnabled
@@ -36,7 +36,7 @@ spec:
           - name: CheckUpdateTime
             value: "30000"
           - name: PATH_BASE
-            value: /ordering-api
+            value: {{ .Values.path_base }}
           - name: UseLoadTest
             value: "False"
           - name: Serilog__MinimumLevel__Override__Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
@@ -44,9 +44,9 @@ spec:
           - name: Serilog__MinimumLevel__Override__ordering-api
             value: Verbose
           - name: GRPC_PORT
-            value: "81"
+            value: {{ .Values.ports.grpc | quote }}
           - name: PORT
-            value: "80"
+            value: {{ .Values.ports.container | quote }}
         ports:
-        - containerPort: 80
-        - containerPort: 81
+        - containerPort: {{ .Values.ports.container }}
+        - containerPort: {{ .Values.ports.grpc }}

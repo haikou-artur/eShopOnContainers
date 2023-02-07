@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: paymentapi
-        image: arteshop/paymentapi
+        image: {{ .Values.image }}
         imagePullPolicy: IfNotPresent
         env:
           - name: ASPNETCORE_ENVIRONMENT
@@ -22,7 +22,7 @@ spec:
           - name: ASPNETCORE_URLS
             value: http://0.0.0.0:80
           - name: EventBusConnection
-            value: rabbitmq
+            value: {{ .Values.service.rabbitmq }}
           - name: AzureServiceBusEnabled
             value: "False"
           - name: Serilog__MinimumLevel__Override__payment-api.IntegrationEvents.EventHandling
@@ -30,4 +30,4 @@ spec:
           - name: Serilog__MinimumLevel__Override__Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ
             value: Verbose
         ports:
-        - containerPort: 80
+        - containerPort: {{ .Values.ports.container }}
