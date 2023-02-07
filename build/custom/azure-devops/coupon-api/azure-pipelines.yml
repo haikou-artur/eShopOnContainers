@@ -19,6 +19,6 @@ jobs:
     helmto: $(Build.ArtifactStagingDirectory)/deploy/custom/helm
 - template: ../multiarch.yaml
   parameters:
-    image: couponyapi
+    image: couponapi
     branch: $(Build.SourceBranchName)
     registryEndpoint: $(registryEndpoint)
