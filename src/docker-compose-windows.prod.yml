@@ -5,7 +5,7 @@ version: '3.4'
 #     ESHOP_PROD_EXTERNAL_DNS_NAME_OR_IP=192.168.88.248
 # but values present in the environment vars at runtime will always override those defined inside the .env file
 # An external IP or DNS name has to be used when testing the Web apps and the Xamarin apps from remote machines/devices using the same WiFi, for instance.
-#
+#1
 # Set ASPNETCORE_ENVIRONMENT=Development to get errors while testing. 
 #
 # You need to start it with the following CLI command:
