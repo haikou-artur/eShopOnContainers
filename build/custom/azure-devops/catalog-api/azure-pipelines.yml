@@ -22,3 +22,4 @@ jobs:
     image: catalogapi
     branch: $(Build.SourceBranchName)
     registryEndpoint: $(registryEndpoint)
+    registry: ${REGISTRY}

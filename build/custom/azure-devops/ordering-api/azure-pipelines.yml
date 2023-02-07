@@ -24,3 +24,4 @@ jobs:
     image: orderapi
     branch: $(Build.SourceBranchName)
     registryEndpoint: $(registryEndpoint)
+    registry: ${REGISTRY}

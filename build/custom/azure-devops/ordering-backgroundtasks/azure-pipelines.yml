@@ -24,3 +24,4 @@ jobs:
     image: orderbackgraondtasks
     branch: $(Build.SourceBranchName)
     registryEndpoint: $(registryEndpoint)
+    registry: ${REGISTRY}

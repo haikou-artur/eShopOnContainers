@@ -24,3 +24,4 @@ jobs:
     image: orderingsignalr
     branch: $(Build.SourceBranchName)
     registryEndpoint: $(registryEndpoint)
+    registry: ${REGISTRY}
