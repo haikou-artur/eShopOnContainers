@@ -24,9 +24,9 @@ spec:
           - name: GracePeriodTime
             value: "1"
           - name: ConnectionString
-            value: Server={{ .Valuse.service.sqldata }},5433;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
+            value: Server={{ .Values.service.sqldata }},5433;Database=Microsoft.eShopOnContainers.Services.OrderingDb;User Id=sa;Password=Pass@word
           - name: EventBusConnection
-            value: rabbitmq
+            value: {{ .Values.service.rabbitmq }}
           - name: UseCustomizationData
             value: "False"
           - name: AzureServiceBusEnabled
