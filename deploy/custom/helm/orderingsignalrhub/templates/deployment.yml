@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: orderssignalrhub
-        image: arteshop/orderingsignalr
+        image: {{ .Values.image }}
         imagePullPolicy: IfNotPresent
         env:
           - name: ASPNETCORE_ENVIRONMENT
