@@ -19,9 +19,9 @@ public class Startup
             {
                 options.AddPolicy("CorsPolicy",
                     builder => builder
+                    .WithOrigins(Configuration.GetValue<string>("HostOrigin"))
                     .AllowAnyMethod()
                     .AllowAnyHeader()
-                    .SetIsOriginAllowed((host) => true)
                     .AllowCredentials());
             });
 

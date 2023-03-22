@@ -37,5 +37,7 @@ spec:
             value: {{ .Values.service.identity }}
           - name: PATH_BASE
             value: {{ .Values.path_base }}
+          - name: HostOrigin
+            value: {{ .Values.ingress.webspa }}
         ports:
         - containerPort: {{ .Values.ports.container }}

@@ -113,7 +113,7 @@ public static class CustomExtensionMethods
         {
             options.AddPolicy("CorsPolicy",
                 builder => builder
-                .SetIsOriginAllowed((host) => true)
+                .WithOrigins(configuration.GetValue<string>("HostOrigin"))
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials());

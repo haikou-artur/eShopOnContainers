@@ -27,5 +27,7 @@ spec:
             value: "False"
           - name: identityUrl
             value: {{ .Values.service.identity }}
+          - name: HostOrigin
+            value: {{ .Values.ingress.webspa }}
         ports:
         - containerPort: {{ .Values.ports.container }}

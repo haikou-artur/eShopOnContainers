@@ -37,6 +37,8 @@ spec:
             value: "False"
           - name: PORT
             value: {{ .Values.ports.container | quote }}
+          - name: HostOrigin
+            value: {{ .Values.ingress.webspa }}
         ports:
         - containerPort: {{ .Values.ports.container }}
         - containerPort: {{ .Values.ports.grpc }}

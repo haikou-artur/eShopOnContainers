@@ -7,6 +7,7 @@ using Coupon.Domain.Interfaces;
 using Coupon.Infrastructure.Configuration;
 using Coupon.Infrastructure.Repositories;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -44,10 +45,10 @@ builder.Services.AddSwaggerGen(options =>
 });
 builder.Services.AddCors(opt =>
 {
-    opt.AddPolicy("AllowCors", x =>
+    opt.AddPolicy("AllowCors", builder =>
     {
-        x
-        .WithOrigins("http://webspa.my:8080")
+        builder
+        .WithOrigins(configuration.GetValue<string>("HostOrigin"))
         .AllowAnyMethod()
         .AllowAnyHeader();
     });
