@@ -28,7 +28,7 @@ spec:
           - name: ConnectionString
             value: {{ .Values.service.redis }}
           - name: IdentityUrlExternal
-            value: {{ .Values.ingress.identity }}
+            value: http://{{ .Values.ingress.identity }}
           - name: PATH_BASE
             value: {{ .Values.path_base }}
           - name: GRPC_PORT
@@ -38,7 +38,7 @@ spec:
           - name: PORT
             value: {{ .Values.ports.container | quote }}
           - name: HostOrigin
-            value:  http://{{ .Values.ingress.webspa }}
+            value: http://{{ .Values.ingress.webspa }}
         ports:
         - containerPort: {{ .Values.ports.container }}
         - containerPort: {{ .Values.ports.grpc }}
