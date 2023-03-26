@@ -1,0 +1,5 @@
+ports:
+  container: 6379
+  service: 6379
+
+image: redis:latest

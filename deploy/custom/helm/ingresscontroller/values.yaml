@@ -1,6 +1,6 @@
 ports:
   container: 80
 
-nginx-ingress-ssl-redirect: "false"
-ingress-kube-ssl-redirect: "false"
-ingress-class: addon-http-application-routing
+nginxingresssslredirect: false
+ingresskubesslredirect: false
+ingressclass: addon-http-application-routing

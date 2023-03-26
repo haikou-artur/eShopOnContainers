@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Coupon.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/loyalty")]
     [ApiController]
     [Authorize]
     public class LoyaltyProgramController : ControllerBase
@@ -23,6 +23,7 @@ namespace Coupon.API.Controllers
         public async Task<ActionResult<decimal>> Get()
         {
             var userId = _identityService.GetUserIdentity();
+            Console.WriteLine(userId);
             var points = await _service.GetLoyaltyPoint(userId);
 
             if(points == null)

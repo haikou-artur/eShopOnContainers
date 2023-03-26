@@ -3,4 +3,4 @@ ports:
   service: 80
   admin: 8001
 
-image: envoyproxy/envoy:v1.11.1
+image: envoyproxy/envoy:v1.25-latest

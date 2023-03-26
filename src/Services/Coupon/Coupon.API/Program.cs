@@ -46,12 +46,11 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("AllowCors", builder =>
-    {
-        builder
+    builder
         .WithOrigins(configuration.GetValue<string>("HostOrigin"))
         .AllowAnyMethod()
-        .AllowAnyHeader();
-    });
+        .AllowAnyHeader()
+        .AllowCredentials());
 });
 builder.Services.AddRabbitMQPersistentConnection(configuration);
 builder.Services.AddEventBus(configuration);
@@ -92,7 +91,16 @@ app.UseRouting();
 app.UseCors("AllowCors");
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapControllers();
+app.UseEndpoints(configure =>
+{
+    configure.MapDefaultControllerRoute();
+    configure.MapControllers();
+    configure.MapGet("/status", async ctx =>
+    {
+        await ctx.Response.WriteAsync("Online");
+    });
+});
+
 app.Run();
 
 

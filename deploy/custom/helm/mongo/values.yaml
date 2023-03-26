@@ -1,0 +1,5 @@
+ports:
+  container: 27017
+  service: 27017
+
+image: mongo:latest

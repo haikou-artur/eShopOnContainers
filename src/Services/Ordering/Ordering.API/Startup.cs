@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Configuration;
 using Ordering.API.Application.IntegrationEvents.EventHandling;
 using Ordering.API.Application.IntegrationEvents.Events;
 
@@ -21,7 +22,7 @@ public class Startup
             })
             .Services
             .AddApplicationInsights(Configuration)
-            .AddCustomMvc()
+            .AddCustomMvc(Configuration)
             .AddHealthChecks(Configuration)
             .AddCustomDbContext(Configuration)
             .AddCustomSwagger(Configuration)
@@ -133,7 +134,7 @@ static class CustomExtensionsMethods
         return services;
     }
 
-    public static IServiceCollection AddCustomMvc(this IServiceCollection services)
+    public static IServiceCollection AddCustomMvc(this IServiceCollection services, IConfiguration configuration)
     {
         // Add framework services.
         services.AddControllers(options =>
@@ -147,8 +148,8 @@ static class CustomExtensionsMethods
         services.AddCors(options =>
         {
             options.AddPolicy("CorsPolicy",
-                builder => builder
-                .SetIsOriginAllowed((host) => true)
+            builder => builder
+                .WithOrigins(configuration.GetValue<string>("HostOrigin"))
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials());

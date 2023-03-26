@@ -28,7 +28,7 @@ spec:
           - name: ConnectionString
             value: Server=sqldata,5433;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word
           - name: PicBaseUrl
-            value: {{ .Values.ingress.webapigw }}/c/api/v1/catalog/items/[0]/pic/
+            value: http://{{ .Values.ingress.webapigw }}/c/api/v1/catalog/items/[0]/pic/
           - name: PATH_BASE
             value: {{ .Values.path_base }}
           - name: GRPC_PORT
@@ -38,7 +38,7 @@ spec:
           - name: PORT
             value: {{ .Values.ports.container | quote }}
           - name: HostOrigin
-            value: {{ .Values.ingress.webspa }}
+            value:  http://{{ .Values.ingress.webapigw }}
         ports:
         - containerPort: {{ .Values.ports.container }}
         - containerPort: {{ .Values.ports.grpc }}

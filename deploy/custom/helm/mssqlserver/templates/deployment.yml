@@ -14,26 +14,13 @@ spec:
     spec:
       containers:
       - name: sqldata
-        image: mcr.microsoft.com/mssql/server:2019-latest
+        image: {{ .Values.image }}
+        imagePullPolicy: IfNotPresent
         env:
           - name: ACCEPT_EULA
             value: "Y"
           - name: MSSQL_SA_PASSWORD
-            value: Pass@word
+            value: {{ .Values.password }}
         ports:
-        - containerPort: 1433
+        - containerPort: {{ .Values.ports.container }}
         resources: {}
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: sqldata
-spec:
-  type: ClusterIP
-  ports:
-  - name: http
-    protocol: TCP
-    port: 5433
-    targetPort: 1433
-  selector:
-    app: sqldata

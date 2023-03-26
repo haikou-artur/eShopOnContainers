@@ -2,6 +2,6 @@ ports:
   container: 80
   service: 80
 
-image: arteshop/identityapi
+image: arteshop.azurecr.io/identityapi
 
 path_base: /identity-api

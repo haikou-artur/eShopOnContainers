@@ -1,0 +1,7 @@
+ports:
+  container1: 15672
+  container2: 5672
+  service1: 15672
+  service2: 5672
+
+image: rabbitmq:3-management-alpine

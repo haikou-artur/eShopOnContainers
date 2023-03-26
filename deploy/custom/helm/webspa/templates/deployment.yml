@@ -30,6 +30,6 @@ spec:
           - name: UseCustomizationData
             value: "False"
           - name: SignalrHubUrl
-            value: http://{{.Values.ingress.signalrhub }}}
+            value: http://{{ .Values.ingress.webapigw }}
         ports:
         - containerPort: {{ .Values.ports.container }}
