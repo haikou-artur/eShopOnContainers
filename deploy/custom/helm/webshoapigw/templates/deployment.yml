@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: webshopapigw
+  name: webshoapigw
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: webshopapigw
+      app: webshoapigw
   template:
     metadata:
       labels:
-        app: webshopapigw
+        app: webshoapigw
     spec:
       volumes:
       - name: config
         configMap:
-          name: envoy-cm
+          name: webshoapigw-envoy-cm
           items:
           - key: envoy.yaml
             path: envoy.yaml
       containers:
-      - name: webshopapigw
+      - name: webshoapigw
         image: {{ .Values.image }}
         imagePullPolicy: IfNotPresent
         volumeMounts:
