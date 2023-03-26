@@ -1,5 +1,5 @@
 ports:
-  container: 80
+  container: 10000
   service: 80
   admin: 8001
 
