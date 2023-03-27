@@ -14,5 +14,5 @@ service:
   mongo: mongo
   webspa: webspa
   identityapi: identity-api
-  webshopapigw: webshopapigw
+  webshopapigw: webshoapigw
   signalrhub: orderssignalrhub

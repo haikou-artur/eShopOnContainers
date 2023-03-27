@@ -1,0 +1,22 @@
+trigger:
+  branches:
+    include:
+    - dev
+  paths:
+    include:
+    - build/custom/azure-devops/rabbitmq/*
+    - deploy/custom/helm/rabbitmq/*
+jobs:
+- job: PublishCharts
+  condition: ne('$(Build.Reason)', 'PullRequest')
+  pool:
+    vmImage: 'ubuntu-20.04'
+  steps:
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: $(Build.SourcesDirectory)/deploy/custom/helm
+      targetFolder: $(Build.ArtifactStagingDirectory)/deploy/custom/helm
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: $(Build.ArtifactStagingDirectory)/deploy/custom/helm
+      artifactName: helm

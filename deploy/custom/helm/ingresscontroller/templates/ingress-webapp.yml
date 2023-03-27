@@ -3,8 +3,7 @@ kind: Ingress
 metadata:
   name: ingressmywebspa
   annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    ingress.kubernetes.io/ssl-redirect: "false"
+    kubernetes.io/ingress.class: addon-http-application-routing
 spec:
   rules:
   - host: {{ .Values.ingress.webspa }}
@@ -47,5 +46,5 @@ spec:
             name: {{ .Values.service.signalrhub }}
             port:
               number: 80
-  ingressClassName: nginx
+  # ingressClassName: nginx
   
