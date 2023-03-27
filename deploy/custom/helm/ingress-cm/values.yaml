@@ -1,0 +1,2 @@
+proxybuffersize: "128k"
+proxybuffers: "4 256k"
