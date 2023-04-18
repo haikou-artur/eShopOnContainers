@@ -12,7 +12,7 @@ COPY Web/WebSPA/Client/package-lock.json .
 # RUN npm install -g npm
 RUN npm install
 COPY Web/WebSPA/Client .
-RUN npm run build:dev
+RUN npm run build:prod
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
