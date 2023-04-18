@@ -10,9 +10,10 @@ WORKDIR /web/src
 COPY Web/WebSPA/Client/package.json .
 COPY Web/WebSPA/Client/package-lock.json .
 # RUN npm install -g npm
-RUN npm install
+#RUN npm install
 COPY Web/WebSPA/Client .
-RUN npm run build:dev
+#RUN npm run build:dev
+RUN npm i npm@latest -g && npm update && npm install && npm run build:prod
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
