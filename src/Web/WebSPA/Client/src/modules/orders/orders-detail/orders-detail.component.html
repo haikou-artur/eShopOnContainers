@@ -37,8 +37,8 @@
                 <div>Subtotal</div>
                 <div class="ml-3">${{order.subtotal | number:'.2-2'}}</div>
             </div>
-            <div *ngIf="order.discountcode" class="d-flex align-items-center justify-content-end mt-4 mb-4 text-uppercase">
-                <div>{{order.discountcode}}</div>
+            <div *ngIf="order.discountCode" class="d-flex align-items-center justify-content-end mt-4 mb-4 text-uppercase">
+                <div>{{order.discountCode}}</div>
                 <div class="ml-3">${{order.discount | number:'.2-2'}}</div>
             </div>
 
